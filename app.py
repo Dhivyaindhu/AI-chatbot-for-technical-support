@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 from langchain_core.prompts import PromptTemplate
 import requests
-import json----------------------
+import json
 # Gemini API wrapper
 # -----------------------------
 class GeminiChatLLM:
