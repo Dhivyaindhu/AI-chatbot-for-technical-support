@@ -1,4 +1,4 @@
 streamlit
 pillow
-langchain
-requests
+langchain-core
+groq
