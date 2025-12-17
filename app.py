@@ -83,7 +83,7 @@ prompt = PromptTemplate(
 # -----------------------------
 # Run Gemini (API key directly here)
 # -----------------------------
-API_KEY = "AIzaSyBDNbs3ZqGfkn1aYzqDW08gr5SFRdcIsdE"
+API_KEY ="AIzaSyD9LHhkJCd_kiSw7vhPomKjBeQ_sEGUMOM"
 llm = GeminiChatLLM(API_KEY)
 
 if st.button("Get Solution"):
