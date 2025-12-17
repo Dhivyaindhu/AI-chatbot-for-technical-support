@@ -7,7 +7,7 @@ from groq import Groq
 # Groq LLM Wrapper
 # -----------------------------
 class GroqChatLLM:
-    def __init__(self, api_key, model="llama3-8b-8192"):
+    def __init__(self, api_key, model="llama-3.1-8b-instant"):
         self.client = Groq(api_key=api_key)
         self.model = model
 
