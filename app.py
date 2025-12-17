@@ -6,7 +6,7 @@ import json
 # Gemini API wrapper
 # -----------------------------
 class GeminiChatLLM:
-    def __init__(self, api_key, model="models/gemini-2.0-flash-lite"):
+    def __init__(self, api_key, model="gemini-2.5-flash-native-audio-dialog"):
         self.api_key = api_key
         self.api_url = f"https://generativelanguage.googleapis.com/v1beta/{model}:generateContent"
 
