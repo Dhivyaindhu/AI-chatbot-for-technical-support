@@ -1,36 +1,25 @@
 import streamlit as st
 from PIL import Image
 from langchain_core.prompts import PromptTemplate
-import requests
-import json
-# Gemini API wrapper
+from groq import Groq
+
 # -----------------------------
-class GeminiChatLLM:
-    def __init__(self, api_key, model="gemini-2.5-flash-lite"):
-        self.api_key = api_key
-        self.api_url = f"https://generativelanguage.googleapis.com/v1beta/{model}:generateContent"
+# Groq LLM Wrapper
+# -----------------------------
+class GroqChatLLM:
+    def __init__(self, api_key, model="llama3-8b-8192"):
+        self.client = Groq(api_key=api_key)
+        self.model = model
 
     def __call__(self, prompt):
-        payload = {
-            "contents": [
-                {
-                    "parts": [
-                        {"text": prompt}
-                    ]
-                }
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": "You are a friendly IT support assistant."},
+                {"role": "user", "content": prompt}
             ]
-        }
-
-        response = requests.post(
-            f"{self.api_url}?key={self.api_key}",
-            headers={"Content-Type": "application/json"},
-            data=json.dumps(payload)
         )
-
-        if response.status_code == 200:
-            return response.json()["candidates"][0]["content"]["parts"][0]["text"]
-        else:
-            return f"Error {response.status_code}: {response.text}"
+        return response.choices[0].message.content
 
 
 # -----------------------------
@@ -44,7 +33,7 @@ def extract_text_from_image(image):
 # Streamlit UI
 # -----------------------------
 st.set_page_config(page_title="AI IT Support", page_icon="🛠️")
-st.title("🛠️ AI IT Support Assistant (Gemini)")
+st.title("🛠️ AI IT Support Assistant (Groq)")
 
 user_question = st.text_input("Describe your issue:")
 
@@ -81,10 +70,10 @@ prompt = PromptTemplate(
 
 
 # -----------------------------
-# Run Gemini (API key directly here)
+# Run Groq
 # -----------------------------
-API_KEY ="AIzaSyCJxZazOSoYGistTuB4mn4WORhOHymPYkE"
-llm = GeminiChatLLM(API_KEY)
+API_KEY = st.secrets["GROQ_API_KEY"]
+llm = GroqChatLLM(API_KEY)
 
 if st.button("Get Solution"):
     if not user_question.strip():
@@ -97,4 +86,3 @@ if st.button("Get Solution"):
         answer = llm(final_prompt)
         st.subheader("Solution")
         st.write(answer)
-
